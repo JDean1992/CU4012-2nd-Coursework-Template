@@ -133,32 +133,43 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Background.cpp" />
+    <ClCompile Include="Blunderbuss.cpp" />
+    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Framework\BaseLevel.cpp" />
     <ClCompile Include="Framework\Collision.cpp" />
     <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\GameState.cpp" />
     <ClCompile Include="Framework\Input.cpp" />
-    <ClCompile Include="Framework\World.cpp" />
-    <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Level.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Spikes.cpp" />
+    <ClCompile Include="Terrain.cpp" />
+    <ClCompile Include="WinningScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Background.h" />
+    <ClInclude Include="Blunderbuss.h" />
+    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Framework\BaseLevel.h" />
     <ClInclude Include="Framework\Collision.h" />
     <ClInclude Include="Framework\GameObject.h" />
     <ClInclude Include="Framework\GameState.h" />
     <ClInclude Include="Framework\Input.h" />
-    <ClInclude Include="Framework\UI.h" />
-    <ClInclude Include="Framework\World.h" />
-    <ClInclude Include="Ground.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Spikes.h" />
+    <ClInclude Include="Terrain.h" />
+    <ClInclude Include="WinningScreen.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Framework\DO_NOT_EDIT.txt" />
