@@ -3,18 +3,17 @@
 Player::Player()
 {
 	health = 100;
-	speed = 200;
+	speed = 100;
 
 	if (!texture.loadFromFile("gfx/MinerMole.png"))
 	{
 		std::cout << "File not found\n";
 	}
 	setTexture(&texture);
-	setSize(sf::Vector2f(100, 100));
+	setSize(sf::Vector2f(60, 40));
 	setCollisionBox(getPosition(), getSize());
 	setMass(100.f);
 	setTag("Player");
-	
 }
 
 void Player::handleInput(float dt)
@@ -22,10 +21,12 @@ void Player::handleInput(float dt)
 	if (input->isKeyDown(sf::Keyboard::A))
 	{
 		velocity = sf::Vector2f(-1 * speed, 0);
+
 	}
 	else if (input->isKeyDown(sf::Keyboard::D))
 	{
 		velocity = sf::Vector2f(1 * speed, 0);
+
 	}
 	else if (input->isKeyDown(sf::Keyboard::S))
 	{
@@ -41,10 +42,28 @@ void Player::handleInput(float dt)
 	{
 		velocity = sf::Vector2f(0, 0);
 	}
+
+
+	if (input->isLeftMouseDown())
+	{
+		input->setLeftMouse(Input::MouseState::UP);
+		Bullet b;
+		b.setPosition(getPosition());
+		b.move(sf::Vector2f(-1, 0) * 150.f * dt);
+		bullets.push_back(b);
+	}
 }
 
 
 
 void Player::update(float dt)
 {
+}
+
+void Player::render()
+{
+	for (auto& bullet : bullets)
+	{
+		window->draw(bullet);
+	}
 }

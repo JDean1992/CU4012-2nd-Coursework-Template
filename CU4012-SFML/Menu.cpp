@@ -12,15 +12,15 @@ Menu::Menu(sf::RenderWindow* hwnd, Input* in, GameState* game)
 	titleFont.loadFromFile("font/BungeeInline-Regular.ttf");
 
 
-	menu_texture.loadFromFile("gfx/BackgroundMineImage.jpg");
+	menu_texture.loadFromFile("gfx/BackgroundMineImage.png");
 	menu_sprite.setTexture(menu_texture);
-	menu_sprite.setScale(4.50, 3.75);	
+	menu_sprite.setScale(3, 5);
+	
 
 
 	Title.setFont(titleFont);
 	Title.setFillColor(sf::Color::Green);
 	Title.setString("Under-mined");
-	menu_sprite.setScale(0.5, 0.5);
 	Title.setOutlineColor(sf::Color::Black);
 	Title.setCharacterSize(150);
 	Title.setPosition(450, 100);
@@ -37,7 +37,7 @@ Menu::Menu(sf::RenderWindow* hwnd, Input* in, GameState* game)
 	UIText[1].text.setFont(UIfont);
 	UIText[1].text.setFillColor(sf::Color::White);
 	UIText[1].text.setString("Exit");
-	UIText[1].text.setPosition(sf::Vector2f(1000, 300));
+	UIText[1].text.setPosition(sf::Vector2f(1000, 400));
 	UIText[1].setCollisionBox(sf::FloatRect(1000, 300, 35, 15));
 
 
@@ -74,7 +74,7 @@ void Menu::updateVisualFeedback()
 {
     for (int i = 0; i < 2; i++) {
         if (i == selectedItem) {
-			UIText[i].text.setFillColor(sf::Color::Red); // Highlight selected item
+			UIText[i].text.setFillColor(sf::Color::Green); // Highlight selected item
         } else {
             UIText[i].text.setFillColor(sf::Color::White); // Default color for non-selected items
         }
@@ -88,7 +88,7 @@ void Menu::MoveUp()
 		UIText[selectedItem].text.setFillColor(sf::Color::White);
 		selectedItem--;
 
-		UIText[selectedItem].text.setFillColor(sf::Color::Red);
+		UIText[selectedItem].text.setFillColor(sf::Color::Green);
 	}
 }
 void Menu::MoveDown()
@@ -98,11 +98,11 @@ void Menu::MoveDown()
 		UIText[selectedItem].text.setFillColor(sf::Color::White);
 		selectedItem++;
 
-		UIText[selectedItem].text.setFillColor(sf::Color::Red);
+		UIText[selectedItem].text.setFillColor(sf::Color::Green);
 	}
 
 }
-int Menu::handleInput(float dt)
+void Menu::handleInput(float dt)
 {
 	// Keyboard handling for menu navigation
 	if (input->isKeyDown(sf::Keyboard::Up)) {
@@ -136,9 +136,6 @@ int Menu::handleInput(float dt)
 			input->setLeftMouse(Input::MouseState::UP); // Assuming you have a method to reset the mouse state
 		}
 	}
-
-	return 0; // Return value can be used if needed for further input handling logic
-
 }
 
 void Menu::render()

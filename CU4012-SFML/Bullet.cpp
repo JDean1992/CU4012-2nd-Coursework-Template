@@ -2,16 +2,12 @@
 
 Bullet::Bullet()
 {
-	velocity = sf::Vector2f(100, 0);
-	
-}
-
-void Bullet::shoot(float dt)
-{
-	move(velocity * dt);
-}
-
-void Bullet::update(float dt)
-{
-
+	if (!texture.loadFromFile("gfx/Beach_Ball.png"))
+	{
+		std::cout << "Texture not found\n";
+	}
+	setSize(sf::Vector2f(10, 10));
+	setCollisionBox(getPosition(), getSize());
+	setTag("Bullet");
+	setMass(10);
 }

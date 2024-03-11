@@ -135,9 +135,12 @@ bool GameObject::checkCollision(GameObject* otherBox) {
 // Colliding object is passed in for information
 // e.g. compare sprite positions to determine new velocity direction.
 // e.g. checking sprite type (world, enemy, bullet etc) so response is based on that.
-void GameObject::collisionResponse(GameObject * collider)
+void GameObject::collisionResponse(GameObject* collider)
 {
-	collidingTag = collider->getTag();
+    if (!collider->getStatic())
+    {
+        collidingTag = collider->getTag();
+    }
 }
 
 void GameObject::UpdatePhysics(sf::Vector2f* gravity,float deltaTime)

@@ -29,7 +29,6 @@ public:
 private:
 	// Default variables for level class.
 	Player p1;
-	Enemy e1;
 
 	Ground ground;
 	
@@ -42,7 +41,6 @@ private:
 	sf::Texture TerrainBackground;
 
 	Enemy Bat;
-	sf::Texture BatSprite;
 	
 	sf::Vector2f move;
 

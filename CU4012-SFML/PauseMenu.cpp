@@ -2,6 +2,11 @@
 
 PauseMenu::PauseMenu(sf::RenderWindow* hwnd, Input* in, GameState* game)
 {
+
+	window = hwnd;
+	input = in;
+	gameState = game;
+
 	title.loadFromFile("font/SamuraiBlast.ttf");
 	font.loadFromFile("font/SuperPixel.ttf");
 
@@ -16,9 +21,9 @@ PauseMenu::~PauseMenu()
 {
 }
 
-int PauseMenu::handleInput(float dt)
+void PauseMenu::handleInput(float dt)
 {
-	return 0;
+
 }
 
 void PauseMenu::update(float dt)

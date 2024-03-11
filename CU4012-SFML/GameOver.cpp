@@ -6,9 +6,6 @@ GameOver::GameOver(sf::RenderWindow* hwnd, Input* in, GameState* game)
 	input = in;
 	gameState = game;
 
-	Level level(window, input, gameState);
-	level1 = new Level(window, input, gameState);
-
 	font.loadFromFile("font/BloodyFont.otf");
 	title.loadFromFile("font/BloodyFont.otf");
 
@@ -16,10 +13,6 @@ GameOver::GameOver(sf::RenderWindow* hwnd, Input* in, GameState* game)
 	Game_Over.setTexture(GameOver_texture);
 	Game_Over.setScale(1, 1);
 	Game_Over.setPosition(550, 600);
-	
-	
-
-	
 	
 
 	Title.setFont(title);
@@ -53,21 +46,19 @@ GameOver::~GameOver()
 
 }
 
-int GameOver::handleInput(float dt)
+void GameOver::handleInput(float dt)
 {
 	if (input->isKeyDown(sf::Keyboard::Up))
 
 	{
 		MoveUp();
 		input->setKeyUp(sf::Keyboard::Up);
-		return 0;
 	}
 
 	if (input->isKeyDown(sf::Keyboard::Down))
 	{
 		MoveDown();
 		input->setKeyUp(sf::Keyboard::Down);
-		return 0;
 	}
 	if (input->isKeyDown(sf::Keyboard::Enter))
 	{
@@ -87,8 +78,6 @@ int GameOver::handleInput(float dt)
 		case 2:
 			exit(0);
 		}
-
-		return 0;
 	}
 }
 

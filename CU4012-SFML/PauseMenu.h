@@ -9,7 +9,7 @@ public:
 
     ~PauseMenu();
 
-    int handleInput(float dt);
+    void handleInput(float dt);
     void update(float dt);
     void render();
     void MoveUp();

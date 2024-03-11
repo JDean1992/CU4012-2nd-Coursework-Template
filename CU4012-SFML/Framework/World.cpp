@@ -3,6 +3,7 @@
 
 World::World(sf::Vector2f gravity) : gravity(gravity)
 {
+    
 }
 
 void World::AddGameObject(GameObject& obj)

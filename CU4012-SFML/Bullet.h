@@ -3,11 +3,8 @@
 class Bullet :
     public GameObject
 {
-    int speed;
+    sf::Texture texture;
 public:
     Bullet();
-    void shoot(float dt);
-
-    void update(float dt);
 };
 
