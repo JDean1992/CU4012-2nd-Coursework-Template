@@ -1,22 +1,16 @@
 #include "Level.h"
 
-Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs)
+Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, World* w)
 {
 	window = hwnd;
 	input = in;
 	gameState = gs;
-
+	world = w;
 	// initialise game objects
 	// how to shoot
 	// //add gravity
 	// make collision with ground
 	//moliere
-	PlayerTex.loadFromFile("gfx/MinerMole.png");
-	PlayerSprite.setCollisionBox(sf::FloatRect(0, 0, 40, 40));
-	PlayerSprite.setTexture(&PlayerTex);
-	PlayerSprite.setPosition(10, 30);
-	PlayerSprite.setInput(input);
-	PlayerSprite.setSize(sf::Vector2f(60, 60));
 
 	BackgroundTex.loadFromFile("gfx/BackgroundDirt.jpg");
 	bg.setTexture(&BackgroundTex);
@@ -114,6 +108,14 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs)
 	spikes[2].setPosition(600, 860);
 	spikes[2].setSize(sf::Vector2f(100, 40));
 
+	p1.setPosition(100, 100);
+	p1.setInput(input);
+
+	e1.setPosition(500, 100);
+	world->AddGameObject(p1);
+	world->AddGameObject(e1);
+
+	world->AddGameObject(ground);
 }
 
 Level::~Level()
@@ -125,7 +127,6 @@ Level::~Level()
 // handle user input
 void Level::handleInput(float dt)
 {
-	PlayerSprite.handleInput(dt);
 
 	BBuss.handleInput(dt);
 
@@ -135,6 +136,11 @@ void Level::handleInput(float dt)
 		//bullets.setPosition(BBuss.getPosition());
 		bullets.shoot(dt);
 	}
+	if (input->isKeyDown(sf::Keyboard::Escape))
+	{
+		exit(0);
+	}
+	p1.handleInput(dt);
 }
 
 // Update game objects
@@ -142,7 +148,6 @@ void Level::update(float dt)
 
 {
 
-	PlayerSprite.update(dt);
 
 	BBuss.setPosition(PlayerSprite.getPosition().x+10, PlayerSprite.getPosition().y+35);
 	
@@ -188,12 +193,25 @@ void Level::update(float dt)
 	}
 
 	Bat.update(dt, move);
+	if(p1.CollisionWithTag("Enemy"))
+	{ 
+		
+	}
 }
 
 // Render level
 void Level::render()
 {
 	beginDraw();
+	window->draw(p1);
+	window->draw(p1.getDebugCollisionBox());
+
+
+	window->draw(e1);
+	window->draw(e1.getDebugCollisionBox());
+
+
+	window->draw(ground.getDebugCollisionBox());
 
 	window->draw(bg);
 	window->draw(ter1[0]);
