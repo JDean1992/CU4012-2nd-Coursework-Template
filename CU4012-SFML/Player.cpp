@@ -12,7 +12,7 @@ Player::Player()
 	setTexture(&texture);
 	setSize(sf::Vector2f(60, 40));
 	setCollisionBox(getPosition(), getSize());
-	setMass(100.f);
+	setMass(10.f);
 	setTag("Player");
 }
 
@@ -34,7 +34,7 @@ void Player::handleInput(float dt)
 
 	if (input->isKeyDown(sf::Keyboard::Space) && canJump)
 	{
-		Jump(50.f);
+		Jump(100.f);
 	}
 	// If left mouse button is pressed, create a projectile
 	if (input->isLeftMouseDown())

@@ -64,7 +64,7 @@ void Tiles::handleInput(float dt)
 		if (input->isKeyDown(sf::Keyboard::B))
 		{
 			input->setKeyUp(sf::Keyboard::B);
-			setTag("Wall");
+			setTag("Ground");
 			//std::cout << "Wall\n";
 		}
 	}
