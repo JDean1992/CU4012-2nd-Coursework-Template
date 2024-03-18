@@ -30,7 +30,7 @@ public:
 	GameState* gameState;
 
 	int selectedItem;
-	sf::Font UIfont;
+	sf::Font UIfont; 
 	sf::Font titleFont;
 
 	sf::Text Title;

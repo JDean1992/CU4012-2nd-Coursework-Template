@@ -142,6 +142,8 @@
     <ClCompile Include="Framework\GameObject.cpp" />
     <ClCompile Include="Framework\GameState.cpp" />
     <ClCompile Include="Framework\Input.cpp" />
+    <ClCompile Include="Framework\TileManager.cpp" />
+    <ClCompile Include="Framework\Tiles.cpp" />
     <ClCompile Include="Framework\World.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Ground.cpp" />
@@ -150,6 +152,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RatEnemy.cpp" />
     <ClCompile Include="Spikes.cpp" />
     <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="WinningScreen.cpp" />
@@ -164,6 +167,8 @@
     <ClInclude Include="Framework\GameObject.h" />
     <ClInclude Include="Framework\GameState.h" />
     <ClInclude Include="Framework\Input.h" />
+    <ClInclude Include="Framework\TileManager.h" />
+    <ClInclude Include="Framework\Tiles.h" />
     <ClInclude Include="Framework\UI.h" />
     <ClInclude Include="Framework\World.h" />
     <ClInclude Include="GameOver.h" />
@@ -172,6 +177,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="PauseMenu.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RatEnemy.h" />
     <ClInclude Include="Spikes.h" />
     <ClInclude Include="Terrain.h" />
     <ClInclude Include="WinningScreen.h" />

@@ -3,6 +3,10 @@
 class Ground :
     public GameObject
 {
+    sf::Texture terrain;
+    
+    
+    
 public:
     Ground();
 };

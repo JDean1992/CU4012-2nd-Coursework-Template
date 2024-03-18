@@ -2,10 +2,19 @@
 
 Ground::Ground()
 {
-	//setPosition(100, 500);
-	//setSize(sf::Vector2f(1000, 100));
+	
+
+	if (!terrain.loadFromFile("gfx/Terrain.jpg"))
+	{
+		std::cout << "terrain not found / n" ;
+	}
+	setTexture(&terrain);
+	
+	setSize(sf::Vector2f(400, 50));
 	//setOrigin(getSize() / 2.f);
-	//setCollisionBox(getPosition(), getSize());
+	setCollisionBox(0, 80, 400, 50);
+	setPosition(0, 80);
 	//setTag("Ground");
-	//setStatic(true);
+	setStatic(true);
 }
+	

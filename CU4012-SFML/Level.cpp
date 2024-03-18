@@ -12,71 +12,54 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, World* w)
 	// make collision with ground
 	//moliere
 
+	if (!font.loadFromFile("font/arial.ttf")) {
+		std::cout << "error loading font" << std::endl;
+	};
+
+	TileEditorText.setFont(font);
+	TileEditorText.setCharacterSize(24);
+	TileEditorText.setFillColor(sf::Color::Red);
+
+	TileEditorText.setString(" Press E to edit tiles");
+	TileEditorText.setPosition(0, 0);
+
+	tileManager.setInput(input);
+	tileManager.setWindow(window);
+	tileManager.setWorld(world);
+	tileManager.setCustomTexture("gfx/Terrain.jpg");
+	if (!tileManager.loadTiles())
+	{
+		std::cout << "Tiles not found\n";
+	}
+	else
+	{
+		std::cout << "Tiles loaded\n";
+	}
+
+	sf::Vector2f viewSize = sf::Vector2f(window->getSize().x, window->getSize().y);
+	view.setSize(viewSize.x, viewSize.y);
+	view.setCenter(viewSize.x / 2, viewSize.y / 2);
+	//view.setSize(800, 600);
+	
+
 	BackgroundTex.loadFromFile("gfx/BackgroundDirt.jpg");
 	bg.setTexture(&BackgroundTex);
 	bg.setSize(sf::Vector2f(2210, 1100));
-	bg.setInput(input);
 	bg.setWindow(window);
 
-	TerrainBackground.loadFromFile("gfx/Terrain.jpg");
-	ter1[0].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[0].setPosition(0, 80);
-	ter1[0].setTexture(&TerrainBackground);
-	ter1[0].setSize(sf::Vector2f(400, 50));
 
-	ter1[1].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[1].setPosition(400, 130);
-	ter1[1].setTexture(&TerrainBackground);
-	ter1[1].setSize(sf::Vector2f(70, 50));
-
-	ter1[2].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[2].setPosition(470, 130);
-	ter1[2].setTexture(&TerrainBackground);
-	ter1[2].setSize(sf::Vector2f(350, 50));
-
-	ter1[3].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[3].setPosition(920, 130);
-	ter1[3].setTexture(&TerrainBackground);
-	ter1[3].setSize(sf::Vector2f(660, 50));
-
-	ter1[4].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[4].setPosition(980, 450);
-	ter1[4].setTexture(&TerrainBackground);
-	ter1[4].setSize(sf::Vector2f(950, 50));
-
-	ter1[5].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[5].setPosition(780, 500);
-	ter1[5].setTexture(&TerrainBackground);
-	ter1[5].setSize(sf::Vector2f(200, 50));
-
-	ter1[6].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[6].setPosition(480, 600);
-	ter1[6].setTexture(&TerrainBackground);
-	ter1[6].setSize(sf::Vector2f(300, 50));
-
-	ter1[7].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[7].setPosition(180, 700);
-	ter1[7].setTexture(&TerrainBackground);
-	ter1[7].setSize(sf::Vector2f(250, 50));
-
-	ter1[8].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[8].setPosition(0, 900);
-	ter1[8].setTexture(&TerrainBackground);
-	ter1[8].setSize(sf::Vector2f(700, 50));
-
-	ter1[9].setCollisionBox(sf::FloatRect(0, 0, 80, 40));
-	ter1[9].setPosition(850, 900);
-	ter1[9].setTexture(&TerrainBackground);
-	ter1[9].setSize(sf::Vector2f(1100, 50));
 
 	Bat.setPosition(300, 30);
+	speed = 150.f;
 
-	BlunderB.loadFromFile("gfx/Blunderbuss.png");
-	BBuss.setTexture(&BlunderB);
-	BBuss.setSize(sf::Vector2f(40, 20));
-	BBuss.setPosition(45, 65);
-	BBuss.setInput(input);
-	BBuss.setWindow(window);
+	Bat2.setPosition(500, 500);
+
+	Rat.setPosition(300, 110);
+	Rat2.setPosition(400, 200);
+
+
+	Gun.setPosition(45, 65);
+	
 
 
 	healthbar.setFillColor(sf::Color::Red);
@@ -101,16 +84,19 @@ Level::Level(sf::RenderWindow* hwnd, Input* in, GameState* gs, World* w)
 	spikes[2].setPosition(600, 860);
 	spikes[2].setSize(sf::Vector2f(100, 40));
 
-	p1.setPosition(100, 100);
+
+
+	p1.setPosition(50, 50);
 	p1.setInput(input);
 	p1.setWindow(window);
-
+	p1.setWorld(world);
 	world->AddGameObject(p1);
 	world->AddGameObject(Bat);
+	world->AddGameObject(Bat2);
+	world->AddGameObject(Rat);
+	world->AddGameObject(Rat2);
 
-	world->AddGameObject(ground);
 }
-
 Level::~Level()
 {
 	
@@ -121,75 +107,70 @@ Level::~Level()
 void Level::handleInput(float dt)
 {
 
-	BBuss.handleInput(dt);
-
-	//if (input->isLeftMouseDown())
-	//{
-	//	//input->setLeftMouse(Input::MouseState::UP);
-	//	//bullets.setPosition(BBuss.getPosition());
-	//	bullets.shoot(dt);
-	//}
+	Gun.handleInput(dt);
+	
 	if (input->isKeyDown(sf::Keyboard::Escape))
 	{
 		exit(0);
 	}
-	p1.handleInput(dt);
+	// Check if 'E' is pressed to toggle editing mode
+	if (input->isKeyDown(sf::Keyboard::E))
+	{
+		// First, if we're in edit mode, we save the tiles
+		if (editMode)
+		{
+			std::cout << "Exiting edit mode. Saving tiles...\n";
+			tileManager.saveTiles(tileManager.getTiles(), tileManager.getFilePath());
+		}
+		// Then toggle the edit mode
+		editMode = !editMode;
+		input->setKeyUp(sf::Keyboard::E); // Acknowledge the key press
+	}
+	if (editMode)
+	{
+		// Handle moving the view or other edit-mode-specific logic
+		moveView(dt);
+		//tileManager.handleInput(dt); // tileManager might have its own logic for when editing is true
+	}
+	else
+	{
+		// Handle game logic when not in edit mode
+		p1.handleInput(dt);
+	}
 }
 
 // Update game objects
 void Level::update(float dt)
 
 {
+	sf::Vector2f viewSize = sf::Vector2f(window->getSize().x, window->getSize().y);
 
+	if (editMode)
+	{
+		TileEditorText.setPosition(view.getCenter().x - viewSize.x / 2, view.getCenter().y - viewSize.y / 2);
+		TileEditorText.setString("Editing mode\nLeft Mouse Button to place tile\nPress B to set collider as a wall (allows bouncing) \nPress E to exit and Save");
+		tileManager.handleInput(dt);
+		tileManager.update(dt);
+	}
+	else
+	{
+		TileEditorText.setString("Press E to edit tiles");
+		//Gun.update(dt);
+		//Bat.update(dt);
+		Bat2.updateEnemy2(dt);
+		//Rat.update(dt);
+		Rat2.updateRatEnemy2(dt);
+		if (p1.CollisionWithTag("Enemy"))
+		{
+			std::cout << "Colliding with Enemy\n";
+		}
+	}
 
-	BBuss.setPosition(p1.getPosition().x+23, p1.getPosition().y+23);
 	
-	if (p1.getGlobalBounds().intersects(ter1[0].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
-	if (p1.getGlobalBounds().intersects(ter1[1].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
-	if (p1.getGlobalBounds().intersects(ter1[2].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
-	if (p1.getGlobalBounds().intersects(ter1[3].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
-	if (p1.getGlobalBounds().intersects(ter1[4].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
-	if (p1.getGlobalBounds().intersects(ter1[5].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
-	if (p1.getGlobalBounds().intersects(ter1[6].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
-	if (p1.getGlobalBounds().intersects(ter1[7].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
-	if (p1.getGlobalBounds().intersects(ter1[8].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
-	if (p1.getGlobalBounds().intersects(ter1[9].getGlobalBounds()))
-	{
-		p1.move(0.0f, -1.5f);
-	}
 
-	Bat.update(dt);
-	if(p1.CollisionWithTag("Enemy"))
-	{ 
-		std::cout << "Colliding with Enemy\n";
-	}
+
+
+
 }
 
 // Render level
@@ -197,32 +178,66 @@ void Level::render()
 {
 	beginDraw();
 
-
+	//window->setView(view);
 	window->draw(bg);
-	window->draw(ter1[0]);
-	window->draw(ter1[1]);
-	window->draw(ter1[2]);
-	window->draw(ter1[3]);
-	window->draw(ter1[4]);
-	window->draw(ter1[5]);
-	window->draw(ter1[6]);
-	window->draw(ter1[7]);
-	window->draw(ter1[8]);
-	window->draw(ter1[9]);
-	window->draw(spikes[0]);
-	window->draw(spikes[1]);
-	window->draw(spikes[2]);
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		window->draw(spikes[i]);
+	}
+
 	window->draw(healthbar);
 	window->draw(Bat);
+	window->draw(Bat2);
+	window->draw(Rat);
+	window->draw(Rat2);
 	window->draw(p1);
-	window->draw(BBuss);
+	window->draw(Gun);
+	
+	auto bullets = p1.getBullets();
+	for (auto& bullet : bullets)
+	{
+		window->draw(*bullet);
+		window->draw(bullet->getDebugCollisionBox());
+	}
 	//window->draw(bullets);
 
 	window->draw(p1.getDebugCollisionBox());
 
 	window->draw(Bat.getDebugCollisionBox());
 	p1.render();
-	//window->draw(ground.getDebugCollisionBox());
+	//window->draw(ter1[0].getDebugCollisionBox());
+	tileManager.render();
 
 	endDraw();
+}
+void Level::moveView(float dt)
+{
+
+	if (input->isKeyDown(sf::Keyboard::W))
+	{
+		view.move(0, -100 * dt);
+	}
+	if (input->isKeyDown(sf::Keyboard::S))
+	{
+		view.move(0, 100 * dt);
+	}
+	if (input->isKeyDown(sf::Keyboard::A))
+	{
+		view.move(-100 * dt, 0);
+	}
+	if (input->isKeyDown(sf::Keyboard::D))
+	{
+		view.move(100 * dt, 0);
+	}
+
+	window->setView(view);
+
+}
+
+void Level::adjustViewToWindowSize(unsigned int width, unsigned int height)
+{
+	sf::FloatRect visibleArea(0, 0, static_cast<float>(width), static_cast<float>(height));
+	view.setSize(static_cast<float>(width), static_cast<float>(height));
+	view.setCenter(static_cast<float>(width) / 2, static_cast<float>(height) / 2);
 }

@@ -2,13 +2,10 @@
 
 Background::Background()
 {
-	view.setCenter(200.f, 200.f);
+	//view.setCenter(200.f, 200.f);
+	setStatic(true);
 }
 
 Background::~Background()
-{
-}
-
-void Background::handleInput(float dt)
 {
 }

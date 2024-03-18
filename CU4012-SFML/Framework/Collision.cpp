@@ -1,7 +1,5 @@
 #include "Collision.h"
 
-
-
 // Check AABB for collision. Returns true if collision occurs.
 bool Collision::checkBoundingBox(GameObject* s1, GameObject* s2)
 {
@@ -63,16 +61,4 @@ bool Collision::checkBoundingCircle(GameObject* s1, GameObject* s2)
 	}
 	return false;
 }
-
-bool Collision::intersects(const sf::RectangleShape r, const sf::RectangleShape p)
-{
-	sf::FloatRect playerBounds = p.getGlobalBounds();
-	sf::FloatRect terrainBounds = r.getGlobalBounds();
-	return playerBounds.intersects(terrainBounds);
-
-}
-
-
-
-
 

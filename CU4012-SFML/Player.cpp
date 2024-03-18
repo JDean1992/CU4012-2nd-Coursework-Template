@@ -18,39 +18,54 @@ Player::Player()
 
 void Player::handleInput(float dt)
 {
+	velocity.x = 0.f;
+
+	// Update velocity based on input
 	if (input->isKeyDown(sf::Keyboard::A))
 	{
-		velocity = sf::Vector2f(-1 * speed, 0);
-
+		// Update only the horizontal component, preserving vertical velocity
+		velocity.x = -speed;
 	}
-	else if (input->isKeyDown(sf::Keyboard::D))
+	if (input->isKeyDown(sf::Keyboard::D))
 	{
-		velocity = sf::Vector2f(1 * speed, 0);
-
+		// Update only the horizontal component, preserving vertical velocity
+		velocity.x = speed;
 	}
-	else if (input->isKeyDown(sf::Keyboard::S))
+
+	if (input->isKeyDown(sf::Keyboard::Space) && canJump)
 	{
-		velocity = sf::Vector2f(0, 1 * speed);
+		Jump(50.f);
 	}
-
-	else if (input->isKeyDown(sf::Keyboard::W))
-	{
-		velocity = sf::Vector2f(0, -1 * speed);
-
-	}
-	else
-	{
-		velocity = sf::Vector2f(0, 0);
-	}
-
-
+	// If left mouse button is pressed, create a projectile
 	if (input->isLeftMouseDown())
 	{
-		input->setLeftMouse(Input::MouseState::UP);
-		Bullet b;
-		b.setPosition(getPosition());
-		b.move(sf::Vector2f(-1, 0) * 150.f * dt);
-		bullets.push_back(b);
+		//set Key up 
+		input->setLeftMouse(Input::MouseState::UP); // Mark the mouse click as handled
+
+		// Create a new projectile
+		Bullet* bullet = new Bullet();
+		sf::Vector2f BulletPos = getPosition() + sf::Vector2f(100, 50);
+		bullet->setPosition(BulletPos);
+
+		// Calculate the position of the mouse
+		sf::Vector2f MousePos = sf::Vector2f(input->getMouseX(), input->getMouseY());
+
+		// Calculate the direction from the bullet's position to the mouse position
+		sf::Vector2f direction = MousePos - getPosition();
+
+		// Normalize the direction vector
+		float magnitude = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+		sf::Vector2f normalizedDirection = direction / magnitude;
+
+		// Set the velocity of the bullet to be in the direction of the mouse
+		// Adjust the speed as needed by multiplying the normalized direction by the desired speed
+		bullet->setVelocity(normalizedDirection * 1000.f); // You can adjust the speed by changing 1000.f
+
+		// Add the bullet to the list of bullets
+		bullets.push_back(bullet);
+
+		// Add the bullet to the world
+		world->AddGameObject(*bullet);
 	}
 }
 
@@ -58,12 +73,12 @@ void Player::handleInput(float dt)
 
 void Player::update(float dt)
 {
+	
 }
 
 void Player::render()
 {
-	for (auto& bullet : bullets)
-	{
-		window->draw(bullet);
-	}
+	
 }
+
+

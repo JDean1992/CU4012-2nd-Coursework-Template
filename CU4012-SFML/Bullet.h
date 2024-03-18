@@ -1,10 +1,16 @@
 #pragma once
 #include "Framework/GameObject.h"
+#include<vector>
 class Bullet :
     public GameObject
 {
-    sf::Texture texture;
+    float speed;
+    sf::Texture BulletTex;
+    sf::Vector2f velocity;
 public:
-    Bullet();
-};
 
+    Bullet();
+
+    void update();
+    
+ };
